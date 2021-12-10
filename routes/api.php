@@ -6,6 +6,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\AuthController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +35,18 @@ Route::get('/comments', [CommentsController::class, 'index']);
 Route::post('post/{post}/comments', [CommentsController::class, 'store']);
 Route::post('post/{post}/likes', [LikesController::class, 'store']);
 Route::get('/search',[SearchController::class,'search']);
+
+// Route::post('login', [PassportController::class,'login']);
+// Route::post('register', [PassportController::class,'register']);
+ 
+// Route::middleware('auth:api')->group(function () {
+//     Route::get('user', [PassportController::class,'details']);
+//  });
+
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('profile', [AuthController::class, 'profile']);
+    Route::post('logout', [AuthController::class, 'logout']);
+});
