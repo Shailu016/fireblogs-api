@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Likes;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Auth;
 
 class LikesController extends Controller
 {
@@ -15,9 +16,9 @@ class LikesController extends Controller
      
         if (!$like) {
             $like=  likes::create([
-              'user_id' => auth()->user()->id,
+              'user_id' => Auth::id(),
               'like'=>1,
-              'post_id'=> request('post_id')
+              'post_id'=> $post->id
             ]);
             return  $like ;
         } else {

@@ -59,9 +59,11 @@ class CommentsController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show(Comments $comments, Post $post)
     {
-        //
+        $comments= Comments::where("post_id", $post->id)->first();
+        dd($comments);
+        return response()->json($comments);
     }
 
     /**
