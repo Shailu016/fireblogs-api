@@ -25,6 +25,10 @@ class LikesController extends Controller
             $like->delete();
         }
         
-        return "like removed";
+        return response()->json([
+            'user_id' => Auth::id(),
+            'like'=>0,
+            'post_id'=> $post->id
+          ]);
     }
 }
