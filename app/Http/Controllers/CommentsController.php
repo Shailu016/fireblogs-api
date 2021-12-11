@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comments;
 use App\Models\Post;
 use Illuminate\Http\Request;
-
-
+use Illuminate\Support\Facades\Auth;
 
 class CommentsController extends Controller
 {
@@ -43,14 +42,15 @@ class CommentsController extends Controller
             'body' => 'required'
         ]);
 
-     $comments=  Comments::create([
-         //    'user_id' => 1,
-           'user_id' => auth()->user()->id,
-           'post_id' => $post->id,
+        
+        $post->comments()->create([
+             //'user_id' => 1,
+          'user_id' => Auth::user(),
+          "post_id" => $post->id,
            'body' => request('body')
         ]);
          
-        return response()->json($comments);
+        return response()->json($post);
     }
 
     /**

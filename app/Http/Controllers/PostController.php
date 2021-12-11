@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-use App\Http\Resources\PostResource;
+use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -17,7 +17,7 @@ class PostController extends Controller
     {
         $posts = $post->all();
 
-         return response()->json($posts);
+        return response()->json($posts);
     }
    
     /**
@@ -35,29 +35,29 @@ class PostController extends Controller
      */
     public function store(Request $request, Post $post)
     {
-         request()->validate(
+        request()->validate(
             [
-              'name'=>'required', 
-              'excerpt'=>'required', 
+              'name'=>'required',
+              'excerpt'=>'required',
               'body'=>'required',
               'image'=>'mimes:jpg,png,jpeg,webp|max:50480'
-             
-            ]);
-            if(isset($request->image)) {
-                $imagePath = time() . $request->name . '.'. $request->image->extension();
-                $request->image->move(public_path('images'), $imagePath);
-            }
+        
+            ]
+        );
+        if (isset($request->image)) {
+            $imagePath = time() . $request->name . '.'. $request->image->extension();
+            $request->image->move(public_path('images'), $imagePath);
+        }
             
-            $posts = new Post();
-            $posts->name = request('name');
-            $posts->excerpt = request('excerpt');
-            $posts->body = request('body');
-            $posts->tags = request('tags');
+        $posts = new Post();
+        $posts->name = request('name');
+        $posts->excerpt = request('excerpt');
+        $posts->body = request('body');
+        $posts->tags = request('tags');
            
-            $posts->image_path = $imagePath ?? null;
-            $posts->save();
-            return response()->json($posts);
-            
+        $posts->image_path = $imagePath ?? null;
+        $posts->save();
+        return response()->json($posts);
     }
 
     /**
@@ -68,9 +68,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-       
-       
-        return response()->json($post);;
+        return response()->json($post);
     }
 
     /**
@@ -95,11 +93,12 @@ class PostController extends Controller
     {
         request()->validate(
             [
-              'name'=>'required', 
-              'excerpt'=>'required', 
+              'name'=>'required',
+              'excerpt'=>'required',
               'body'=>'required',
               'image'=>'mimes:jpg,png,jpeg,webp|max:5048'
-            ]);
+            ]
+        );
 
         $post->name = request('name');
         $post->excerpt = request('excerpt');
@@ -107,21 +106,19 @@ class PostController extends Controller
         $post->tags = request('tags');
     
         
-        if (request()->hasFile('image'))
-        {
+        if (request()->hasFile('image')) {
             $imagePath = time() . $request->name. '.'. $request->image->extension();
             $request->image->move(public_path('images'), $imagePath);
             $oldImagePath = public_path('images') . "\\" . $post->image_path;
             
-             if(File::exists($oldImagePath)) 
-              {
-                 File::delete($oldImagePath);
-              }
+            if (File::exists($oldImagePath)) {
+                File::delete($oldImagePath);
+            }
 
             $post->image_path = $imagePath;
         }
-            $post->save();
-            return response()->json($post);
+        $post->save();
+        return response()->json($post);
     }
 
     /**
@@ -134,6 +131,5 @@ class PostController extends Controller
     {
         $post->delete();
         return "Post deleted successfully";
-    
     }
 }

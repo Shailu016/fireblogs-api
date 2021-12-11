@@ -6,15 +6,11 @@ use App\Models\Likes;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
-
-
 class LikesController extends Controller
 {
     public function store(Post $post)
     {
-
-     
-         $like= Likes::where('user_id',auth()->user()->id)->where('post_id',$post->id)->first();
+        $like= Likes::where('user_id', auth()->user()->id)->where('post_id', $post->id)->first();
          
      
         if (!$like) {
@@ -24,12 +20,10 @@ class LikesController extends Controller
               'post_id'=> request('post_id')
             ]);
             return  $like ;
-   }
-        else{
+        } else {
             $like->delete();
         }
         
-       return "like removed";
+        return "like removed";
     }
-    
 }
