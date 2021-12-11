@@ -8,7 +8,6 @@ use App\Http\Controllers\LikesController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AuthController;
 
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,21 +19,21 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 // post routes
-Route::get('post',[PostController::class,'index']);
-Route::post('post/create',[PostController::class,'store']);
-Route::get('post/{post}',[PostController::class,'show']);
-Route::post('post/{post}/update',[PostController::class,'update']);
-Route::delete('post/{post}/delete',[PostController::class,'delete']);
+
+Route::get('post', [PostController::class,'index']);
+Route::post('post/create', [PostController::class,'store']);
+Route::get('post/{post}', [PostController::class,'show']);
+Route::post('post/{post}/update', [PostController::class,'update']);
+Route::delete('post/{post}/delete', [PostController::class,'delete']);
+    
+Route::post('post/{post}/comments', [CommentsController::class, 'store'])->middleware('auth:sanctum');
+Route::post('post/{post}/likes', [LikesController::class, 'store'])->middleware('auth:sanctum');
+
 
 Route::get('/comments', [CommentsController::class, 'index']);
-Route::post('post/{post}/comments', [CommentsController::class, 'store']);
-Route::post('post/{post}/likes', [LikesController::class, 'store']);
-Route::get('/search',[SearchController::class,'search']);
+Route::get('/search', [SearchController::class,'search']);
 
 // Route::post('login', [PassportController::class,'login']);
 // Route::post('register', [PassportController::class,'register']);

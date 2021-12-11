@@ -41,16 +41,16 @@ class CommentsController extends Controller
         request()->validate([
             'body' => 'required'
         ]);
-
         
-        $post->comments()->create([
+
+        $comments = Comments::create([
              //'user_id' => 1,
-          'user_id' => Auth::user(),
+          'user_id' => Auth::id(),
           "post_id" => $post->id,
            'body' => request('body')
         ]);
          
-        return response()->json($post);
+        return response()->json($comments);
     }
 
     /**

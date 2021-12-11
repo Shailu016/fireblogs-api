@@ -14,12 +14,14 @@ class Comments extends Model
         'post_id'
         
     ];
+    public $table = "comments";
+
     public function post()
-        {
-            return $this->belongsTo(Post::class,'post_id');
-        }
+    {
+        return $this->belongsTo(Post::class, 'post_id');
+    }
     public function users()
-        {
-            return $this->belongsTo(User::class,'user_id',);
-        }
+    {
+        return $this->belongsTo(User::class, 'user_id', );
+    }
 }
