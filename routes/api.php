@@ -23,16 +23,15 @@ use App\Http\Controllers\AuthController;
 // post routes
 
 Route::get('post', [PostController::class,'index']);
-Route::post('post/create', [PostController::class,'store']);
+Route::post('post/create', [PostController::class,'store'])->middleware('auth:sanctum');
 Route::get('post/{post}', [PostController::class,'show']);
 Route::post('post/{post}/update', [PostController::class,'update']);
 Route::delete('post/{post}/delete', [PostController::class,'delete']);
     
 Route::post('post/{post}/comments', [CommentsController::class, 'store'])->middleware('auth:sanctum');
 Route::post('post/{post}/likes', [LikesController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/post/{post}/counts', [LikesController::class, 'count']);
 
-
-Route::get('/post-comments', [CommentsController::class, 'show']);
 Route::get('/comments', [CommentsController::class, 'index']);
 Route::get('/search', [SearchController::class,'search']);
 

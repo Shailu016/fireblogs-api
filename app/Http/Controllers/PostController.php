@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Likes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -54,6 +56,8 @@ class PostController extends Controller
         $posts->excerpt = request('excerpt');
         $posts->body = request('body');
         $posts->tags = request('tags');
+        $posts->user_id = Auth::id();
+        
            
         $posts->image_path = $imagePath ?? null;
         $posts->save();
@@ -68,6 +72,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        //$like= Likes::where('user_id', Auth::id())->where('post_id', $post->post_id)->first();
         return response()->json($post);
     }
 
