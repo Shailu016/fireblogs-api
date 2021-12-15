@@ -39,4 +39,17 @@ class LikesController extends Controller
             'like'=>$like
         ]);
     }
+
+    public function userlike(Post $post, Likes $likes)
+    {
+        $post= $post->likes->where('user_id', Auth::id())->where('post_id', $post->id)->first();
+        if (! $post) {
+            return response()->json([
+                'is_like'=>0
+            ]);
+        }
+        return response()->json([
+            'is_like'=>1
+        ]);
+    }
 }

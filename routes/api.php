@@ -31,6 +31,7 @@ Route::delete('post/{post}/delete', [PostController::class,'delete']);
 Route::post('post/{post}/comments', [CommentsController::class, 'store'])->middleware('auth:sanctum');
 Route::post('post/{post}/likes', [LikesController::class, 'store'])->middleware('auth:sanctum');
 Route::get('/post/{post}/counts', [LikesController::class, 'count']);
+Route::get('/liked/{post}', [LikesController::class, 'userlike'])->middleware('auth:sanctum');
 
 Route::get('/comments', [CommentsController::class, 'index']);
 Route::get('/search', [SearchController::class,'search']);
