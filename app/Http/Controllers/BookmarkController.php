@@ -65,25 +65,16 @@ class BookmarkController extends Controller
      * @param  \App\Models\Bookmark  $bookmark
      * @return \Illuminate\Http\Response
      */
-    public function is_bookmarked(User $user, Post $post)
+    public function check(Bookmark $book, User $user)
     {
-        $bookmark = Bookmark::where('user_id', Auth::id())->where('post_id', $post->id)->first();
-        dd($bookmark);
+        $bookmark = Bookmark::where('user_id', Auth::id())->where('post_id', request('post_id'))->first();
         if (!$bookmark) {
-            $bookmark=  Bookmark::create([
-            'user_id' => Auth::id(),
-            'post_id'=> $post->id,
-            
-            ]);
-           
-            
-            return response()->json([
-                'message' => 'Bookmark added successfully',
-            ]);
-        } else {
-            $bookmark->delete();
             return response()->json([
                 'is_bookmark'=>0
+            ]);
+        } else {
+            return response()->json([
+                'is_bookmark'=>1
             ]);
         }
     }

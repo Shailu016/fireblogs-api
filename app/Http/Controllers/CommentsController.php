@@ -62,7 +62,7 @@ class CommentsController extends Controller
     public function show(Comments $comments, Post $post)
     {
         $comments= Comments::where("post_id", $post->id)->first();
-        dd($comments);
+      
         return response()->json($comments);
     }
 
