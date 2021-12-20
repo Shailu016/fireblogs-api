@@ -17,15 +17,24 @@ class BookmarkController extends Controller
      */
     public function add(User $user, Post $post)
     {
-        $bookmark = Bookmark::where('user_id', Auth::id())->where('post_id', $post->id)->get();
-       
-        $bookmark = new Bookmark();
-        $bookmark->user_id = Auth::id();
-        $bookmark->post_id = $post->id;
-        $bookmark->save();
-        return response()->json([
-            'message' => 'Bookmark added successfully'
-        ]);
+        $bookmark = Bookmark::where('user_id', Auth::id())->where('post_id', $post->id)->first();
+        if (!$bookmark) {
+            $bookmark=  Bookmark::create([
+            'user_id' => Auth::id(),
+            'post_id'=> $post->id,
+            
+            ]);
+           
+            
+            return response()->json([
+                'message' => 'Bookmark added successfully',
+            ]);
+        } else {
+            $bookmark->delete();
+            return response()->json([
+                'is_bookmark'=>0
+            ]);
+        }
     }
 
     /**
@@ -33,14 +42,7 @@ class BookmarkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function remove(Post $post)
-    {
-        $bookmark = Bookmark::where('user_id', Auth::id())->where('post_id', $post->id)->first();
-        $bookmark->delete();
-        return response()->json([
-            'message' => 'Bookmark removed successfully'
-        ]);
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -56,6 +58,7 @@ class BookmarkController extends Controller
     
 
     /**
+     *
      * Display the specified resource.
      *
      * @param  \App\Models\Bookmark  $bookmark

@@ -17,6 +17,7 @@ class CreateBookmarksTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('post_id')->constrained()->cascadeOnDelete();
+            $table->boolean('is_bookmark')->default(0);
             $table->timestamps();
         });
     }
