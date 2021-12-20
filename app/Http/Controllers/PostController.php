@@ -56,10 +56,8 @@ class PostController extends Controller
         $posts->excerpt = request('excerpt');
         $posts->body = request('body');
         $posts->tags = request('tags');
-        $posts->user_id = Auth::id();
-        
-           
         $posts->image_path = $imagePath ?? null;
+        $posts->user_id = Auth::id();
         $posts->save();
         return response()->json($posts);
     }

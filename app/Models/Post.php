@@ -39,4 +39,13 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function bookmarks()
+    {
+        return $this->belongsToMany(Post::class, 'bookmarks', 'user_id', 'post_id');
+    }
+
+    public function is_bookmarked(User $user)
+    {
+        return $this->bookmark->contains($user);
+    }
 }

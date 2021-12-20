@@ -32,6 +32,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    
 
     /**
      * The attributes that should be cast.
@@ -41,4 +42,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function bookmarks()
+    {
+        return $this->belongsToMany(User::class, 'bookmarks', 'post_id', 'user_id');
+    }
 }

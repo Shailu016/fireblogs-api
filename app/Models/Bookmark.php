@@ -5,7 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Favourite extends Model
+class Bookmark extends Model
 {
     use HasFactory;
+    {
+        protected $table='bookmarks';   
+        }
 }
+s

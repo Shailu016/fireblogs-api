@@ -61,4 +61,13 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
         return response()->json(['message' => 'User successfully signed out']);
     }
+
+
+    
+
+    //$role = Role::create(['name' => 'admin']);
+         //$permission = Permission::create(['name' => 'admin']);
+        
+     //auth()->user()->givePermissionTo('admin');
+        //auth()->user()->assignRole('admin');
 }

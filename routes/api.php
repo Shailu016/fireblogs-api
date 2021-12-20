@@ -7,6 +7,7 @@ use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookmarkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,7 @@ Route::get('/search', [SearchController::class,'search']);
 
 // Route::post('login', [PassportController::class,'login']);
 // Route::post('register', [PassportController::class,'register']);
- 
+  
 // Route::middleware('auth:api')->group(function () {
 //     Route::get('user', [PassportController::class,'details']);
 //  });
@@ -49,4 +50,6 @@ Route::post('login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('profile', [AuthController::class, 'profile']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('post/{post}/bookmark', [BookmarkController::class, 'add']);
+    Route::delete('post/{post}/bookmark', [BookmarkController::class, 'remove']);
 });
