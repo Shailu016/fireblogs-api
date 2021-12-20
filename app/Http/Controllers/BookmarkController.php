@@ -48,7 +48,11 @@ class BookmarkController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-   
+    public function get(Post $post, User $user)
+    {
+        $bookmarks=auth()->user()->bookmarks();
+        return response()->json($bookmarks);
+    }
     
 
     /**

@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Bookmark extends Model
 {
     use HasFactory;
-    {
-        protected $table='bookmarks';   
-        }
+    
+    protected $table='bookmarks';
 }
-s
