@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use App\Models\User;
+use App\Models\Bookmark;
 
 class Post extends Model
 {
@@ -41,7 +43,7 @@ class Post extends Model
     }
     public function bookmarks()
     {
-        return $this->belongsToMany(Post::class, 'bookmarks', 'user_id', 'post_id');
+        return $this->belongsToMany(User::class, 'bookmarks', 'user_id', 'post_id');
     }
 
     public function is_bookmarked(User $user)

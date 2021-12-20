@@ -50,8 +50,8 @@ class BookmarkController extends Controller
      */
     public function get(Post $post, User $user)
     {
-        $bookmarks=auth()->user()->bookmarks();
-        return response()->json($bookmarks);
+        $bookmark = Bookmark::where('user_id', Auth::id())->get();
+        return  $post['bookmark'] = $bookmark;
     }
     
 
