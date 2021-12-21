@@ -25,7 +25,10 @@ class Post extends Model
             'posts.body' => 9,
             'posts.name' => 10,
             'posts.id' => 3,
-        ]
+        ],
+        'joins' => [
+            'posts' => ['users.id','posts.user_id'],
+        ],
     ];
 
     public function comments()

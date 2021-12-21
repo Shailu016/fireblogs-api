@@ -9,12 +9,12 @@ class SearchController extends Controller
 {
     public function search(Request $request)
     {
-        if ($request->has('query')) {
-            $posts = Post::search($request->get('query'))->get();
-            return $posts;
-        }
+        $query = $request->input('query');
 
-        $posts = Post::get();
-        return $posts;
+        $posts = Post::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('body', 'LIKE', "%{$query}%")
+            ->get();
+
+        return response()->json($posts);
     }
 }

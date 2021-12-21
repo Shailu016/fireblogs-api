@@ -35,7 +35,7 @@ Route::get('/post/{post}/counts', [LikesController::class, 'count']);
 Route::get('/liked/{post}', [LikesController::class, 'userlike'])->middleware('auth:sanctum');
 
 Route::get('/comments', [CommentsController::class, 'index']);
-Route::get('/search', [SearchController::class,'search']);
+Route::post('/search', [SearchController::class,'search']);
 
 // Route::post('login', [PassportController::class,'login']);
 // Route::post('register', [PassportController::class,'register']);
