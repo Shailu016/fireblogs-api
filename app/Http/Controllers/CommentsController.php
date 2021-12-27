@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comments;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,12 +41,14 @@ class CommentsController extends Controller
     {
         request()->validate([
             'body' => 'required'
+            
         ]);
         
-
+//dd( Auth::user()->name);
         $comments = Comments::create([
              //'user_id' => 1,
           'user_id' => Auth::id(),
+          'user_name' => "nn",
           "post_id" => $post->id,
            'body' => request('body')
         ]);
@@ -95,8 +98,16 @@ class CommentsController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
-    {
-        //
+    // public function destroy(Post $post, Comments $comment)
+    // {
+        
+     
+
+    //     if(Auth::id()==$comment->user_id )
+    //     {
+    //         $comments = Comments::where('post_id',$post->id)->first();
+    //         $comments->delete();
+    //         return "comment deleted successfully";
+    //     }
     }
 }
