@@ -21,15 +21,6 @@ class CommentsController extends Controller
         return response()->json($comments);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -48,7 +39,7 @@ class CommentsController extends Controller
         $comments = Comments::create([
              //'user_id' => 1,
           'user_id' => Auth::id(),
-          'user_name' => "nn",
+          'user_name' => Auth::user()->name,
           "post_id" => $post->id,
            'body' => request('body')
         ]);
@@ -69,45 +60,13 @@ class CommentsController extends Controller
         return response()->json($comments);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
+    // public function destroy( User $user, Comments $comments)
+    // { 
+  
+    //    if(Auth::user()->id == $comments->user_id){
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    // public function destroy(Post $post, Comments $comment)
-    // {
-
-     
-
-    //     if(Auth::id()==$comment->user_id )
-    //     {
-    //         $comments = Comments::where('post_id',$post->id)->first();
-    //         $comments->delete();
-    //         return "comment deleted successfully";
-    //     }
-    
+    //     $comment->delete();
+    //     return "comment deleted successfully";
+    //    }
+    // }
 }
