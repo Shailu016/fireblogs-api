@@ -100,7 +100,7 @@ class CommentsController extends Controller
      */
     // public function destroy(Post $post, Comments $comment)
     // {
-        
+
      
 
     //     if(Auth::id()==$comment->user_id )
@@ -109,5 +109,5 @@ class CommentsController extends Controller
     //         $comments->delete();
     //         return "comment deleted successfully";
     //     }
-    }
+    
 }
