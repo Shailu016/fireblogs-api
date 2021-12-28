@@ -55,18 +55,15 @@ class CommentsController extends Controller
      */
     public function show(Comments $comments, Post $post)
     {
-        $comments= Comments::where("post_id", $post->id)->first();
+        $comments = Comments::where("post_id", $post->id)->first();
       
         return response()->json($comments);
     }
 
-    // public function destroy( User $user, Comments $comments)
-    // { 
-  
-    //    if(Auth::user()->id == $comments->user_id){
-
-    //     $comment->delete();
-    //     return "comment deleted successfully";
-    //    }
-    // }
+    public function delete(Comments $comments)
+    { 
+        $comments->delete();
+        return response()->json($comments);
+    }
+   
 }

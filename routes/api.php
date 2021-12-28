@@ -38,7 +38,7 @@ Route::get('/liked/{post}', [LikesController::class, 'userlike'])->middleware('a
 Route::get('/comments', [CommentsController::class, 'index']);
 Route::post('/search', [SearchController::class,'search']);
 
-// Route::delete('/comments/{comment_id}/delete',[CommentsController::class,'destroy']);
+Route::delete('comments/{comments}/delete', [CommentsController::class,'delete']);
 
 // Route::post('login', [PassportController::class,'login']);
 // Route::post('register', [PassportController::class,'register']);
