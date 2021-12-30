@@ -7,7 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    <H2 class= "m-auto">Welcome to FireBolgs API</H2>
     
 </body>
 </html>

@@ -8,6 +8,7 @@ use App\Http\Controllers\LikesController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,3 +59,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('bookmark', [BookmarkController::class, 'get']);
     Route::get('check/bookmark', [BookmarkController::class, 'check']);
 });
+Route::post('reset-password', [AuthController::class, 'reset']);
+
+
+
+Route::post('forgot-password', [AuthController::class, 'forgetPassword']);
