@@ -44,8 +44,8 @@ class SendToken extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
+                    ->line('You are receiving this email because we received a password reset request for your account.')
+                    ->action('ResetPassword', url('/'))
                     ->line('Thank you for using our application!');
     }
 
