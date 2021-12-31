@@ -17,6 +17,12 @@ class PostController extends Controller
      */
     public function index(Post $post)
     {
+        // if(Auth::check()){
+        //     $posts = $post->all();
+        //     return response()->json([
+        //         'posts' => $posts
+        //     ], 200);
+        // }
         $posts = $post->all();
 
         return response()->json($posts);
@@ -55,7 +61,6 @@ class PostController extends Controller
         $posts->name = request('name');
         $posts->excerpt = request('excerpt');
         $posts->body = request('body');
-        $posts->tags = request('tags');
         $posts->image_path = $imagePath ?? null;
         $posts->user_id = Auth::id();
         $posts->save();
@@ -106,7 +111,6 @@ class PostController extends Controller
         $post->name = request('name');
         $post->excerpt = request('excerpt');
         $post->body = request('body');
-        $post->tags = request('tags');
     
         
         if (request()->hasFile('image')) {
@@ -123,6 +127,7 @@ class PostController extends Controller
         $post->save();
         return response()->json($post);
     }
+   
 
     /**
      * Remove the specified resource from storage.
@@ -134,5 +139,36 @@ class PostController extends Controller
     {
         $post->delete();
         return "Post deleted successfully";
+    }
+    
+
+    public function publishPost(Post $post)
+    {
+        if($post->status == 0){
+
+            $post->update([
+                "status" => 1
+            ]);
+            return response()->json($post);
+        }
+        return "Post is already published";
+    }
+
+    public function unpublishPost(Post $post)
+    {
+        if($post->status == 1){
+            $post->update([
+                "status" => 0
+            ]);
+            return response()->json($post);
+        }
+        return "Post is already unpublished";
+        
+    }
+
+    public function publish(Post $post)
+    {
+        $post = Post::where('status', 1)->get();
+        return response()->json($post);
     }
 }

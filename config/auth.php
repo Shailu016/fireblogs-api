@@ -17,6 +17,7 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -39,6 +40,11 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
         ],
     ],
 

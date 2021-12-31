@@ -23,8 +23,15 @@ use App\Http\Controllers\ForgotPasswordController;
 
 
 // post routes
+Route::group(['middleware' => ['permission:admin','auth:sanctum']], function () {
+    //
+    Route::get('post', [PostController::class,'index']);
+    Route::post('post/{post}/publish', [PostController::class,'publishPost']);
+    Route::post('post/{post}/unpublish', [PostController::class,'unpublishPost']);
+    Route::get('post/publish', [PostController::class,'publish']);
+});
 
-Route::get('post', [PostController::class,'index']);
+
 Route::post('post/create', [PostController::class,'store'])->middleware('auth:sanctum');
 Route::get('post/{post}', [PostController::class,'show']);
 Route::post('post/{post}/update', [PostController::class,'update']);

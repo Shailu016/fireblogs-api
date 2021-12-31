@@ -9,11 +9,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\sendToken;
 use DB;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -25,8 +29,17 @@ class AuthController extends Controller
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
         ]);
+       $token = $user->createToken('auth_token')->plainTextToken;
+       if($user->id == 1){
+        //  $role = Role::create(['name' => 'admin']);
+         $permission = Permission::create(['name' => 'admin']);
+     
+        
+         $user->givePermissionTo('admin');
+        //  $user->assignRole('admin');
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+       
+    }
 
         return response()->json([
             'message' => "User registered successfully",
@@ -46,6 +59,8 @@ class AuthController extends Controller
         $user = User::where('email', $request['email'])->firstOrFail();
 
         $token = $user->createToken('auth_token')->plainTextToken;
+
+        
 
         return response()->json([
             'access_token' => $token,
@@ -82,6 +97,7 @@ class AuthController extends Controller
         ]);
         $user->notify(new sendToken($token));
 
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
@@ -108,6 +124,7 @@ class AuthController extends Controller
                 'password' => Hash::make($validatedData['password']),
                 'token' => $token,
             ]);
+            
 
             return response()->json([
                 'message' => 'Password updated successfully'

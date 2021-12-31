@@ -20,7 +20,6 @@ class CreatePostsTable extends Migration
             $table->string('excerpt');
             $table->text('body');
             $table->string('image_path')->nullable();
-            $table->string('tags')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });
