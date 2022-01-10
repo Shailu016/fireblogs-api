@@ -108,8 +108,9 @@ class BookmarkController extends Controller
      * @param  \App\Models\Bookmark  $bookmark
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bookmark $bookmark)
+    public function remove(Bookmark $bookmark)
     {
-        //
+        $bookmark->delete();
+        return "boomark removed";
     }
 }

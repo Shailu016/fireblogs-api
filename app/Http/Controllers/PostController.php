@@ -17,23 +17,20 @@ class PostController extends Controller
      */
     public function index(Post $post)
     {
-        // if(Auth::check()){
-        //     $posts = $post->all();
-        //     return response()->json([
-        //         'posts' => $posts
-        //     ], 200);
-        // }
+
+
+
         $posts = $post->all();
 
         return response()->json($posts);
     }
-   
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -41,30 +38,41 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Post $post)
+    public function store(Request $request)
     {
-        request()->validate(
+        $request->validate(
             [
-              'name'=>'required',
-              'excerpt'=>'required',
-              'body'=>'required',
-              'image'=>'mimes:jpg,png,jpeg,webp|max:50480'
-        
+                'name' => 'required',
+                'excerpt' => 'required',
+                'body' => 'required',
+                'image' => 'mimes:jpg,png,jpeg,webp|max:50480'
+
             ]
         );
-        if (isset($request->image)) {
-            $imagePath = time() . $request->name . '.'. $request->image->extension();
-            $request->image->move(public_path('images'), $imagePath);
-        }
+
+        try {
             
-        $posts = new Post();
-        $posts->name = request('name');
-        $posts->excerpt = request('excerpt');
-        $posts->body = request('body');
-        $posts->image_path = $imagePath ?? null;
-        $posts->user_id = Auth::id();
-        $posts->save();
-        return response()->json($posts);
+
+            
+            if(isset($request->image)) {
+
+                $imagePath = time() . $request->name . '.'. $request->image->extension();
+                $request->image->move(public_path('images'), $imagePath);
+                
+            }
+           
+            $posts = new Post();
+            $posts->name = request('name');
+            $posts->excerpt = request('excerpt');
+            $posts->body = request('body');
+            $posts->image_path = $imagePath ?? null;
+            $posts->user_id = Auth::id();
+            $posts->save();
+            return response()->json($posts);
+        } catch (\Exception $e) {
+
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -98,36 +106,41 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Post $post)
-    {
-        request()->validate(
-            [
-              'name'=>'required',
-              'excerpt'=>'required',
-              'body'=>'required',
-              'image'=>'mimes:jpg,png,jpeg,webp|max:5048'
-            ]
-        );
+    { {
+            $request->validate(
+                [
+                    'name' => 'required',
+                    'excerpt' => 'required',
+                    'body' => 'required',
+                    'image' => 'mimes:jpg,png,jpeg,webp|max:50480'
 
-        $post->name = request('name');
-        $post->excerpt = request('excerpt');
-        $post->body = request('body');
-    
-        
-        if (request()->hasFile('image')) {
-            $imagePath = time() . $request->name. '.'. $request->image->extension();
-            $request->image->move(public_path('images'), $imagePath);
-            $oldImagePath = public_path('images') . "\\" . $post->image_path;
-            
-            if (File::exists($oldImagePath)) {
-                File::delete($oldImagePath);
+                ]
+            );
+            try {
+
+                $post->name = request('name');
+                $post->excerpt = request('excerpt');
+                $post->body = request('body');
+
+
+                if (request()->hasFile('image')) {
+                    $imagePath = time() . $request->name . '.' . $request->image->extension();
+                    $request->image->move(public_path('images'), $imagePath);
+                    $oldImagePath = public_path('images') . "\\" . $post->image_path;
+
+                    if (File::exists($oldImagePath)) {
+                        File::delete($oldImagePath);
+                    }
+
+                    $post->image_path = $imagePath;
+                }
+                $post->save();
+                return response()->json($post);
+            } catch (\Exception $e) {
+                return $e->getMessage();
             }
-
-            $post->image_path = $imagePath;
         }
-        $post->save();
-        return response()->json($post);
     }
-   
 
     /**
      * Remove the specified resource from storage.
@@ -140,11 +153,11 @@ class PostController extends Controller
         $post->delete();
         return "Post deleted successfully";
     }
-    
+
 
     public function publishPost(Post $post)
     {
-        if($post->status == 0){
+        if ($post->status == 0) {
 
             $post->update([
                 "status" => 1
@@ -156,19 +169,25 @@ class PostController extends Controller
 
     public function unpublishPost(Post $post)
     {
-        if($post->status == 1){
+        if ($post->status == 1) {
             $post->update([
                 "status" => 0
             ]);
             return response()->json($post);
         }
         return "Post is already unpublished";
-        
     }
 
-    public function publish(Post $post)
+    public function publish()
     {
+
         $post = Post::where('status', 1)->get();
-        return response()->json($post);
+       if(!count($post)  ){
+
+           return "no post is published";
     }
+    return response()->json($post);
+      
+    }
+       
 }

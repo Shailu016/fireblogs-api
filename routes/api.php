@@ -8,7 +8,7 @@ use App\Http\Controllers\LikesController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
-use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,20 +23,20 @@ use App\Http\Controllers\ForgotPasswordController;
 
 
 // post routes
-Route::group(['middleware' => ['permission:admin','auth:sanctum']], function () {
+Route::group(['middleware' => ['permission:admin', 'auth:sanctum']], function () {
     //
-    Route::get('post', [PostController::class,'index']);
-    Route::post('post/{post}/publish', [PostController::class,'publishPost']);
-    Route::post('post/{post}/unpublish', [PostController::class,'unpublishPost']);
-    Route::get('post/publish', [PostController::class,'publish']);
+    Route::get('post', [PostController::class, 'index']);
+    Route::post('post/{post}/publish', [PostController::class, 'publishPost']);
+    Route::post('post/{post}/unpublish', [PostController::class, 'unpublishPost']);
 });
 
 
-Route::post('post/create', [PostController::class,'store'])->middleware('auth:sanctum');
-Route::get('post/{post}', [PostController::class,'show']);
-Route::post('post/{post}/update', [PostController::class,'update']);
-Route::delete('post/{post}/delete', [PostController::class,'delete']);
-    
+Route::get('post/publish', [PostController::class, 'publish'])->middleware('auth:sanctum');
+Route::post('post/create', [PostController::class, 'store'])->middleware('auth:sanctum');
+Route::get('post/{post}', [PostController::class, 'show']);
+Route::post('post/{post}/update', [PostController::class, 'update']);
+Route::delete('post/{post}/delete', [PostController::class, 'delete']);
+
 Route::post('post/{post}/comments', [CommentsController::class, 'store'])->middleware('auth:sanctum');
 
 Route::post('post/{post}/likes', [LikesController::class, 'store'])->middleware('auth:sanctum');
@@ -44,13 +44,13 @@ Route::get('/post/{post}/counts', [LikesController::class, 'count']);
 Route::get('/liked/{post}', [LikesController::class, 'userlike'])->middleware('auth:sanctum');
 
 Route::get('/comments', [CommentsController::class, 'index']);
-Route::post('/search', [SearchController::class,'search']);
+Route::post('/search', [SearchController::class, 'search']);
 
-Route::delete('comments/{comments}/delete', [CommentsController::class,'delete']);
+Route::delete('comments/{comments}/delete', [CommentsController::class, 'delete']);
 
 // Route::post('login', [PassportController::class,'login']);
 // Route::post('register', [PassportController::class,'register']);
-  
+
 // Route::middleware('auth:api')->group(function () {
 //     Route::get('user', [PassportController::class,'details']);
 //  });
@@ -67,7 +67,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('check/bookmark', [BookmarkController::class, 'check']);
 });
 Route::post('reset-password', [AuthController::class, 'reset']);
-
-
-
 Route::post('forgot-password', [AuthController::class, 'forgetPassword']);
+
+
+Route::get('/login/{provider}', [GoogleController::class, 'redirectToProvider']);
+Route::get('/login/{provider}/callback', [GoogleController::class, 'handleProviderCallback']);
+
+Route::post("/userProfile", [AuthController::class, "userProfile"])->middleware('auth:sanctum');

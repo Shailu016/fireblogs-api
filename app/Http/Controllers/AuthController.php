@@ -13,6 +13,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 
+
 class AuthController extends Controller
 {
     public function register(Request $request)
@@ -32,14 +33,10 @@ class AuthController extends Controller
        $token = $user->createToken('auth_token')->plainTextToken;
        if($user->id == 1){
         //  $role = Role::create(['name' => 'admin']);
-         $permission = Permission::create(['name' => 'admin']);
-     
-        
-         $user->givePermissionTo('admin');
+            $permission = Permission::create(['name' => 'admin']);
+            $user->givePermissionTo('admin');
         //  $user->assignRole('admin');
-
-       
-    }
+       }
 
         return response()->json([
             'message' => "User registered successfully",
@@ -117,9 +114,7 @@ class AuthController extends Controller
             $tokenData = DB::table('password_resets')
             ->where('token', $token)->first();
             $user = User::where('email', $tokenData->email)->firstOrFail();
-
-           
-
+            
             $user->update([
                 'password' => Hash::make($validatedData['password']),
                 'token' => $token,
@@ -127,8 +122,32 @@ class AuthController extends Controller
             
 
             return response()->json([
-                'message' => 'Password updated successfully'
+                  'message' => 'Password updated successfully'
             ]);
+        }
+
+        public function userProfile(Request $request)
+        {
+            try{
+                $user = User::where('id', Auth::user()->id)->firstOrFail();
+
+                $user->update([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+                return response()->json([
+                    'message' => 'User updated successfully',
+                      'data' =>   $user
+                ]);
+            }catch(Exception $e){
+                return response()->json([
+                    'message' => 'User not updated',
+                      'data' =>   $user
+                ]);
+            }
+            
+            
         }
  
 }

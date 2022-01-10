@@ -10,7 +10,7 @@ use App\Models\Bookmark;
 
 class Post extends Model
 {
-    use HasFactory, SearchableTrait;
+    use HasFactory;
     protected $fillable = [
         'name',
         'excerpt',
@@ -27,7 +27,7 @@ class Post extends Model
             'posts.id' => 3,
         ],
         'joins' => [
-            'posts' => ['users.id','posts.user_id'],
+            'posts' => ['users.id', 'posts.user_id'],
         ],
     ];
 

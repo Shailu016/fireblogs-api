@@ -26,7 +26,7 @@ class User extends Authenticatable
         'token',
         "is_verified",
     ];
-    
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -37,7 +37,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    
+
 
     /**
      * The attributes that should be cast.
@@ -52,7 +52,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Post::class, 'bookmarks', 'post_id', 'user_id');
     }
 
-    
+
     public function sendPasswordResetNotification($token)
     {
 
@@ -60,6 +60,8 @@ class User extends Authenticatable
 
         $this->notify(new ResetPasswordNotification($url));
     }
-  
-   
+    public function providers()
+    {
+        return $this->hasMany(Provider::class, 'user_id', 'id');
+    }
 }
