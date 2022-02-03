@@ -9,6 +9,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\FollowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,3 +75,6 @@ Route::get('/login/{provider}', [GoogleController::class, 'redirectToProvider'])
 Route::get('/login/{provider}/callback', [GoogleController::class, 'handleProviderCallback']);
 
 Route::post("/userProfile", [AuthController::class, "userProfile"])->middleware('auth:sanctum');
+
+Route::get("/profile",[AuthController::class, "profile"])->middleware('auth:sanctum');
+
