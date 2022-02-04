@@ -21,7 +21,7 @@ class PostController extends Controller
 
 
 
-        $post = Post::get();
+        $post = Post::with('users')->get();
 
         
 
@@ -184,7 +184,7 @@ class PostController extends Controller
     public function publish()
     {
 
-        $post = Post::where('status', 1)->get();
+        $post = Post::with('users')->where('status', 1)->get();
        if(!count($post)  ){
 
            return "no post is published";
