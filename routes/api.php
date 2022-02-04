@@ -80,5 +80,5 @@ Route::post("/userProfile", [AuthController::class, "userProfile"])->middleware(
 
 Route::get("/profile",[AuthController::class, "profile"])->middleware('auth:sanctum');
 Route::post("/upload",[ProfileController::class, "store"])->middleware('auth:sanctum');
-
+Route::get('/get',[FollowController::class, 'get'])->middleware('auth:sanctum');
 

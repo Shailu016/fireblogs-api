@@ -43,9 +43,9 @@ class FollowController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function get()
     {
-        //
+     $follow = Follow::with('Posts')->get();
     }
 
     /**

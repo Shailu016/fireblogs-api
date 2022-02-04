@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Profile;
 use App\Models\Likes;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,13 +20,8 @@ class PostController extends Controller
     public function index()
     {
 
-
-
-        $post = Post::with('users')->get();
-
-        
-
-        return response()->json($post);
+     $post = Post::with('users')->get();
+     return response()->json($post);
     }
 
     /**
@@ -61,6 +57,10 @@ class PostController extends Controller
 
                 $imagePath = time() . $request->name . '.'. $request->image->extension();
                 $request->image->move(public_path('images'), $imagePath);
+
+            $profile =Profile::where('user_id', Auth::id())->first();
+            
+            
                 
             }
            
@@ -70,6 +70,7 @@ class PostController extends Controller
             $posts->body = request('body');
             $posts->image_path = $imagePath ?? null;
             $posts->user_id = Auth::id();
+            $posts->user_profile = $profile->image_path;
             $posts->save();
             return response()->json($posts);
         } catch (\Exception $e) {
