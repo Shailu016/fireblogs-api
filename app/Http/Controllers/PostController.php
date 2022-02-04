@@ -16,16 +16,16 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Post $post)
+    public function index()
     {
 
 
 
-        $posts = Post::with('users')->get();
+        $post = Post::get();
 
         
 
-        return response()->json($posts);
+        return response()->json($post);
     }
 
     /**
