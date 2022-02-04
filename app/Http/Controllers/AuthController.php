@@ -14,6 +14,7 @@ use Spatie\Permission\Models\Permission;
 
 
 
+
 class AuthController extends Controller
 {
     public function register(Request $request)
@@ -68,7 +69,8 @@ class AuthController extends Controller
 
     public function profile(Request $request)
     {
-        return $request->user();
+        $user = User::with('profiles')->where('id', Auth::id())->first();
+        return $user;
     }
 
     public function logout(Request $request)
@@ -150,6 +152,4 @@ class AuthController extends Controller
             
         }
 
-
-        
 }

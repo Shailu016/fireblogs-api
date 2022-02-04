@@ -10,6 +10,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\ProfileController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -77,4 +79,6 @@ Route::get('/login/{provider}/callback', [GoogleController::class, 'handleProvid
 Route::post("/userProfile", [AuthController::class, "userProfile"])->middleware('auth:sanctum');
 
 Route::get("/profile",[AuthController::class, "profile"])->middleware('auth:sanctum');
+Route::post("/upload",[ProfileController::class, "store"])->middleware('auth:sanctum');
+
 

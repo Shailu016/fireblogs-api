@@ -42,7 +42,7 @@ class Post extends Model
     }
     public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'users' );
     }
     public function bookmarks()
     {
@@ -53,4 +53,6 @@ class Post extends Model
     {
         return $this->bookmark->contains($user);
     }
+
+    
 }
