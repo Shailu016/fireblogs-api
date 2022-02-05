@@ -193,5 +193,11 @@ class PostController extends Controller
     return response()->json($post);
       
     }
+
+    public function usersPost()
+    {
+        $post = Post::where('user_id', Auth::id())->get();
+        return $post ;
+    }
        
 }

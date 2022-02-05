@@ -8,8 +8,7 @@ use App\Http\Controllers\LikesController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
-use App\Http\Controllers\GoogleController;
-use App\Http\Controllers\FollowController;
+use App\Http\Controllers\UserFollowController;
 use App\Http\Controllers\ProfileController;
 
 
@@ -29,9 +28,9 @@ use App\Http\Controllers\ProfileController;
 Route::group(['middleware' => ['permission:admin', 'auth:sanctum']], function () {
     //
     Route::get('post', [PostController::class, 'index']);
-    Route::post('post/{post}/publish', [PostController::class, 'publishPost']);
     Route::post('post/{post}/unpublish', [PostController::class, 'unpublishPost']);
 });
+Route::post('post/{post}/publish', [PostController::class, 'publishPost']);
 
 
 Route::get('post/publish', [PostController::class, 'publish'])->middleware('auth:sanctum');
@@ -73,12 +72,14 @@ Route::post('reset-password', [AuthController::class, 'reset']);
 Route::post('forgot-password', [AuthController::class, 'forgetPassword']);
 
 
-Route::get('/login/{provider}', [GoogleController::class, 'redirectToProvider']);
-Route::get('/login/{provider}/callback', [GoogleController::class, 'handleProviderCallback']);
-
 Route::post("/userProfile", [AuthController::class, "userProfile"])->middleware('auth:sanctum');
 
 Route::get("/profile",[AuthController::class, "profile"])->middleware('auth:sanctum');
 Route::post("/upload",[ProfileController::class, "store"])->middleware('auth:sanctum');
-Route::get('/get',[FollowController::class, 'get'])->middleware('auth:sanctum');
+
+Route::get('/user_post',[PostController::class, 'usersPost'])->middleware('auth:sanctum');
+
+Route::post('/follow/{post}',[UserFollowController::class,'index'])->middleware('auth:sanctum');
+Route::get('/t',[UserFollowController::class,'show'])->middleware('auth:sanctum');
+
 
