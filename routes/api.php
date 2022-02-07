@@ -86,6 +86,8 @@ Route::post('/reported/{comments}',[ReportController::class, 'store'])->middlewa
 Route::group(['middleware' => ['permission:admin', 'auth:sanctum']], function () {
     
     Route::get('/reported',[ReportController::class, 'index'])->middleware('auth:sanctum');
+    Route::post('/block/{report}',[ReportController::class, 'block'])->middleware('auth:sanctum');
+    Route::get('/block_users',[ReportController::class, 'all_block_user'])->middleware('auth:sanctum');
 });
 
 // Route::post('/follow/{post}',[UserFollowController::class,'index'])->middleware('auth:sanctum');

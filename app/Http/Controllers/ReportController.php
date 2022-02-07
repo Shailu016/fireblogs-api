@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\Models\User;
 use App\Models\Comments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,9 +66,28 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function show(Report $report)
+    public function block(Report $report)
     {
-        //
+        $comments = Comments::where('id', $report->comment_id)->first();
+        $user = User::where('id', $comments->user_id)->firstOrFail();
+       
+        // dd($user->toArray());
+
+
+       if($user->status == 1){
+        
+        
+           
+            $user->update([ 
+                'status' => 0
+            ]);
+            return "user is blocked";
+        }else{
+            $user->update([
+                'status'=> 0 
+            ]);
+            return "user is unblocked";
+        }
     }
 
     /**
@@ -76,9 +96,20 @@ class ReportController extends Controller
      * @param  \App\Models\Report  $report
      * @return \Illuminate\Http\Response
      */
-    public function edit(Report $report)
+    public function all_block_user(Report $report)
     {
-        //
+
+        
+       $user = User::where('status', 0)->get();
+       return  $user;
+      
+       if(!count($user)  ){
+
+           return "no post is published";
+    }
+    return response()->json($user);
+      
+    
     }
 
     /**
