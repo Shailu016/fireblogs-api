@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\UserFollowController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 
 
 /*
@@ -79,7 +80,15 @@ Route::post("/upload",[ProfileController::class, "store"])->middleware('auth:san
 
 Route::get('/user_post',[PostController::class, 'usersPost'])->middleware('auth:sanctum');
 
-Route::post('/follow/{post}',[UserFollowController::class,'index'])->middleware('auth:sanctum');
-Route::get('/t',[UserFollowController::class,'show'])->middleware('auth:sanctum');
+Route::post('/reported/{comments}',[ReportController::class, 'store'])->middleware('auth:sanctum');
+
+
+Route::group(['middleware' => ['permission:admin', 'auth:sanctum']], function () {
+    
+    Route::get('/reported',[ReportController::class, 'index'])->middleware('auth:sanctum');
+});
+
+// Route::post('/follow/{post}',[UserFollowController::class,'index'])->middleware('auth:sanctum');
+// Route::get('/t',[UserFollowController::class,'show'])->middleware('auth:sanctum');
 
 

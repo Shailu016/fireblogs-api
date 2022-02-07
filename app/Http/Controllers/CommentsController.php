@@ -36,15 +36,21 @@ class CommentsController extends Controller
         ]);
         
 //dd( Auth::user()->name);
-        $comments = Comments::create([
-             //'user_id' => 1,
-          'user_id' => Auth::id(),
-          'user_name' => Auth::user()->name,
-          "post_id" => $post->id,
-           'body' => request('body')
-        ]);
-         
-        return response()->json($comments);
+if(Auth::user()->status == 0){
+    return "You are blocked";
+}else{
+    $comments = Comments::create([
+        //'user_id' => 1,
+     'user_id' => Auth::id(),
+     'user_name' => Auth::user()->name,
+     "post_id" => $post->id,
+      'body' => request('body')
+   ]);
+    
+   return response()->json($comments);
+
+}
+       
     }
 
     /**
@@ -65,5 +71,6 @@ class CommentsController extends Controller
         $comments->delete();
         return response()->json($comments);
     }
+
    
 }
