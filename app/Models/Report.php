@@ -11,7 +11,8 @@ class Report extends Model
     protected $fillable = [
       
         'user_id',
-        'comment_id'
+        'comment_id',
+        'post_id'
         
     ];
     
@@ -19,4 +20,10 @@ class Report extends Model
     {
         return $this->belongsTo(Comments::class, 'comment_id' );
     }
+    public function posts()
+    {
+        return $this->belongsTo(Post::class, 'post_id' );
+    }
+
+    
 }

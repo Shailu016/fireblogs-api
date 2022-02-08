@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\Models\Post;
 use App\Models\User;
 use App\Models\Comments;
 use Illuminate\Http\Request;
@@ -15,10 +16,17 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Report $report)
     {
-       $report = Report::with('comments')->get();
-       return  $report;
+       
+        $report = Report::with('comments', 'posts')->get();
+        // $report =$report->comments->post-id;
+        // dd($report =$report->comments->post_id);
+        return response($report);
+
+        // $comments = Comments::with('users')->where('id', $report->comment_id)->first();
+        // $user = User::where('id', $comments->user_id)->first();
+        // dd($user);
     }
 
     /**
@@ -44,9 +52,9 @@ class ReportController extends Controller
         if(!$report){
 
             $report = Report::create([
-              
              'user_id' => Auth::id(),
-             'comment_id' =>  $comments->id
+             'comment_id' =>  $comments->id,
+             'post_id' =>  $comments->post_id
     
            ]);
     
@@ -84,7 +92,7 @@ class ReportController extends Controller
             return "user is blocked";
         }else{
             $user->update([
-                'status'=> 0 
+                'status'=> 1
             ]);
             return "user is unblocked";
         }

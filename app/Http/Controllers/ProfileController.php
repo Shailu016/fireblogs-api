@@ -33,8 +33,7 @@ class ProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     
      */
     public function store(Request $request)
     {
@@ -87,10 +86,7 @@ class ProfileController extends Controller
      * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function show(Profile $profile)
-    {
-        //
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
