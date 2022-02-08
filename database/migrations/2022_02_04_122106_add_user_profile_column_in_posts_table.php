@@ -14,7 +14,7 @@ class AddUserProfileColumnInPostsTable extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->string("user_profile");
+            $table->string("user_profile")->nullable();
         });
     }
 

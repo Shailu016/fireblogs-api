@@ -87,8 +87,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //$like= Likes::where('user_id', Auth::id())->where('post_id', $post->post_id)->first();
-        return response()->json($post);
+        $user = User::where('id', $post->user_id)->get();
+       
+        return response()->json(["post"=>$post, "user"=>$user ]);
     }
 
     /**
