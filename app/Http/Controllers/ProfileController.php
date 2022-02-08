@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
@@ -37,55 +38,48 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(
-            [
-                
-                'profile' => 'mimes:jpg,png,jpeg,webp|max:50480'
+            $user = User::where('id', Auth::id())->first();
+            // if(isset($request->image)) {
 
-            ]
-        );
-
-        $profile = Profile::where("user_id", Auth::id())->first();
-        if(!$profile){
-
-            if(isset($request->image)) {
-
-                $imagePath = time() . $request->name . '.'. $request->image->extension();
-                $request->image->move(public_path('images'), $imagePath);
-                
-          
-           $profile = Profile::create([
-
-            'image_path' =>$imagePath ?? null,
-            'user_id' =>  Auth::id()
-
-           ]);
+            //     $imagePath = time() . $request->name . '.'. $request->image->extension();
+            //     $request->image->move(public_path('images'), $imagePath);
+                 
+            //     $post->image_path = $imagePath;
+            //     $post->save();
+            //          return $user->image;
+            $user->name = request('name');
+            $user->social_links = request('social_links');
+            $user->bio = request('bio');
+           
             
+
+                     
+                if (request()->hasFile('image')) {
+                    $imagePath = time() . $request->name . '.' . $request->image->extension();
+                    $request->image->move(public_path('images'), $imagePath);
+                    $oldImagePath = public_path('images') . "\\" . $user->image_path;
+
+                    if (File::exists($oldImagePath)) {
+                        File::delete($oldImagePath);
+                    }
+
+                    $user->image_path = $imagePath;
+                }
+                $user->save();
+                
+               return  response()->json([
+                   "name" => $user->name,
+                   "image_path" => $user->image_path,
+                   "social_links" => $user->social_links,
+                   "bio" => $user->bio,
+               ]);
+            
+
             // $profile->image_path = $imagePath ?? null;
             // $profile->user_id = Auth::id();
-           
-            return response( [
-                "user_Name" =>Auth::user()->name,
-                "image_path" =>$imagePath,
-                'user_id' =>  Auth::id()
-            ] );
-       
-
-
-
-        }else{
-            $profile->delete();
-            return "profile deled succesfully";
-        }
-
+        
             
-
-            
-           
-
-      
-        }
-    }
+}
 
     /**
      * Display the specified resource.

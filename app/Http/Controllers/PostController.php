@@ -70,7 +70,7 @@ class PostController extends Controller
             $posts->body = request('body');
             $posts->image_path = $imagePath ?? null;
             $posts->user_id = Auth::id();
-            $posts->user_profile = $profile->image_path;
+            $posts->user_profile = $profile;
             $posts->save();
             return response()->json($posts);
         } catch (\Exception $e) {
