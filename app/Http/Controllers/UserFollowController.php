@@ -56,9 +56,13 @@ class UserFollowController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function user_follower_post(Request $request)
     {
-        //
+        $user_fololows = UserFollow::where('follower_id', Auth::id())->first();
+       
+        $post = Post::where('id', $user_fololows->following_id)->where("status", 1)->get();
+        return $post;
+        
     }
 
     /**
