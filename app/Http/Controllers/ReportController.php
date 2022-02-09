@@ -20,13 +20,10 @@ class ReportController extends Controller
     {
        
         $report = Report::with('comments', 'posts')->get();
-        // $report =$report->comments->post-id;
-        // dd($report =$report->comments->post_id);
+        
         return response($report);
 
-        // $comments = Comments::with('users')->where('id', $report->comment_id)->first();
-        // $user = User::where('id', $comments->user_id)->first();
-        // dd($user);
+       
     }
 
     /**

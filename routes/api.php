@@ -93,5 +93,6 @@ Route::group(['middleware' => ['permission:admin', 'auth:sanctum']], function ()
 Route::post('/follow/{post}',[UserFollowController::class,'index'])->middleware('auth:sanctum');
 Route::get('/t',[UserFollowController::class,'userfollower'])->middleware('auth:sanctum');
 Route::get('/tt',[UserFollowController::class,'user_follower_post'])->middleware('auth:sanctum');
+Route::get('/ttt',[ProfileController::class,'all_users']);
 
 

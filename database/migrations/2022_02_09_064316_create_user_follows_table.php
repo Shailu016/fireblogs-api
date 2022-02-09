@@ -17,6 +17,8 @@ class CreateUserFollowsTable extends Migration
             $table->id();
             $table->string('following_id');
             $table->string('follower_id');
+            $table->string('follower_name')->nullable();
+            $table->string('user_image')->nullable();
             $table->timestamps();
         });
     }

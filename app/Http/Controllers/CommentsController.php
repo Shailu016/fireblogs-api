@@ -34,6 +34,7 @@ class CommentsController extends Controller
             'body' => 'required'
             
         ]);
+       
         
 //dd( Auth::user()->name);
 if(Auth::user()->status == 0){
@@ -43,8 +44,9 @@ if(Auth::user()->status == 0){
         //'user_id' => 1,
      'user_id' => Auth::id(),
      'user_name' => Auth::user()->name,
+     'image_path' => Auth::user()->image_path,
      "post_id" => $post->id,
-      'body' => request('body')
+    'body' => request('body')
    ]);
     
    return response()->json($comments);
