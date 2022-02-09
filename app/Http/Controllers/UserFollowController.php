@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserFollow;
+use App\Models\User;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,26 +15,23 @@ class UserFollowController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Post $post)
+     public function index(Post $post)
     {
-    //    $userFollow = UserFollow::where('user_id', Auth::id())->where('author', $post->user_id)->first();
-    //    if(!$userFollow){
-           
-    //     $userFollow = UserFollow::create([
-    //         'user_id' => Auth::id(),
-    //         'author' =>$post->user_id
-    //     ]);
-    //     return $userFollow;
+       $user = User::where('id',$post->user_id )->first();
        
-    //    }else{
-        
-    //     $userFollow->delete();
-    //     return "user unfollows";
-
-        
-    //    }
-
-
+        $user_fololows = UserFollow::where('follower_id', Auth::id())->where('following_id',$post->user_id )->first();
+        if(!$user_fololows){
+            $user_fololows = UserFollow::create([
+                "follower_id"=> Auth::id(),
+                "following_id"=>$post->id,
+                "follower_name"=>$user->name,
+                "user_image"=>$user->image_path
+            ]);
+            return $user_fololows;
+        }else{
+            $user_fololows->delete();
+            return "userunfollows";
+        }
     }
 
     /**
@@ -41,9 +39,15 @@ class UserFollowController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function userfollower()
     {
-        //
+        $report = UserFollow::where('following_id', Auth::id())->get();
+        
+         return response([
+            "followers" => $report,
+            "No.follower" => $report->count(),
+        ]);
+    
     }
 
     /**
@@ -63,12 +67,9 @@ class UserFollowController extends Controller
      * @param  \App\Models\UserFollow  $userFollow
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(UserFollow $userFollow)
     {
-        $userFollow = UserFollow::where('user_id', Auth::id())->first();
-       $post = Post::where('user_id', $userFollow->author)->get();
-       
-       return $post;
+        //
     }
 
     /**

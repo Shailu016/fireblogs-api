@@ -90,7 +90,7 @@ Route::group(['middleware' => ['permission:admin', 'auth:sanctum']], function ()
     Route::get('/block_users',[ReportController::class, 'all_block_user'])->middleware('auth:sanctum');
 });
 
-// Route::post('/follow/{post}',[UserFollowController::class,'index'])->middleware('auth:sanctum');
-// Route::get('/t',[UserFollowController::class,'show'])->middleware('auth:sanctum');
+Route::post('/follow/{post}',[UserFollowController::class,'index'])->middleware('auth:sanctum');
+Route::get('/t',[UserFollowController::class,'userfollower'])->middleware('auth:sanctum');
 
 

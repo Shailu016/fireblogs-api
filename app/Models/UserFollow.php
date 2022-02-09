@@ -8,13 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class UserFollow extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'user_id',
-        'author'
-    ];
+    protected $guarded = [];
 
-    public function posts()
+    public function users()
     {
-        return $this->hasMany(Post::class,'posts');
+        return $this->belongsTo(User::class, 'user_id');
     }
+
 }
