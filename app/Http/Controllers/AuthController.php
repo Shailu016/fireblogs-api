@@ -70,7 +70,7 @@ class AuthController extends Controller
     public function profile(Request $request)
     {
         $user = User::with('profiles')->where('id', Auth::id())->first();
-        return stripslashes($user);
+        return $user;
     }
 
     public function logout(Request $request)
