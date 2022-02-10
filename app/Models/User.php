@@ -78,4 +78,5 @@ public function following() {
 public function followers() {
     return $this->belongsToMany(User::class, 'followers', 'following_id', 'follower_id');
 }
+
 }

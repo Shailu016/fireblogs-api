@@ -53,6 +53,7 @@ class Post extends Model
     {
         return $this->bookmark->contains($user);
     }
-
+    
+   
     
 }

@@ -48,7 +48,9 @@ class ProfileController extends Controller
             //     $post->save();
             //          return $user->image;
             $user->name = request('name');
-            $user->social_links = request('social_links');
+            $user->youtube = request('youtube');
+            $user->facebook = request('facebook');
+            $user->instagram = request('instagram');
             $user->bio = request('bio');
            
             
@@ -70,7 +72,9 @@ class ProfileController extends Controller
                return  response()->json([
                    "name" => $user->name,
                    "image_path" => $user->image_path,
-                   "social_links" => $user->social_links,
+                   "youtube" => $user->youtube,
+                   "facebook" => $user->facebook,
+                   "instagram" => $user->instagram,
                    "bio" => $user->bio,
                ]);
             
@@ -97,8 +101,13 @@ class ProfileController extends Controller
      */
     public function all_users(Profile $profile)
     {
-       $users= User::with('posts')->get();
-     return response($users->post_id);
+       
+       $users= User::withcount('posts')->get();
+       
+       dd( $users);
+       
+      
+     return response($users);
        
     
     }

@@ -14,8 +14,8 @@ class Comments extends Model
         'post_id',
         'user_name',
         'image_path'
-        
     ];
+    
     public $table = "comments";
 
     public function post()

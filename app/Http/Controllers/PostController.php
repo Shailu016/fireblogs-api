@@ -89,7 +89,8 @@ class PostController extends Controller
     {
         $user = User::where('id', $post->user_id)->get();
        
-        return response()->json(["post"=>$post, "user"=>$user ]);
+        return response()->json(["post"=>$post, 
+        "user"=>$user ]);
     }
 
     /**
@@ -200,5 +201,7 @@ class PostController extends Controller
         $post = Post::where('user_id', Auth::id())->get();
         return $post ;
     }
+
+   
        
 }
