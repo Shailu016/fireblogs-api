@@ -22,7 +22,7 @@ class PostController extends Controller
 
      $post = Post::with('users')->get();
      return response()->json($post);
-    }
+    } 
 
     /**
      * Show the form for creating a new resource.
