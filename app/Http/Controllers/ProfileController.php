@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use App\Models\User;
 use App\Models\Post;
+use App\Models\UserFollow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
@@ -101,11 +102,10 @@ class ProfileController extends Controller
      */
     public function all_users(Profile $profile)
     {
-       
+      
        $users= User::withcount('posts')->get();
        
-       dd( $users);
-       
+    //    dd(followers()->count());
       
      return response($users);
        

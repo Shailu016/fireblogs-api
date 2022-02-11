@@ -23,7 +23,7 @@ class UserFollowController extends Controller
         if(!$user_fololows){
             $user_fololows = UserFollow::create([
                 "follower_id"=> Auth::id(),
-                "following_id"=>$post->id,
+                "following_id"=>$post->user_id,
                 "follower_name"=>$user->name,
                 "user_image"=>$user->image_path
             ]);
@@ -94,9 +94,21 @@ class UserFollowController extends Controller
      * @param  \App\Models\UserFollow  $userFollow
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UserFollow $userFollow)
-    {
-        //
+   
+        public function check(Post $post)
+        {
+           $user = User::where('id',$post->user_id )->first();
+           
+            $user_fololows = UserFollow::where('follower_id', Auth::id())->where('following_id',$post->user_id )->first();
+            if(!$user_fololows){
+                
+                return "false";
+            }else{
+                
+                return "true";
+            }
+        
+    
     }
 
     /**

@@ -17,7 +17,7 @@ class CommentsController extends Controller
      */
     public function index(Comments $comments)
     {
-        $comments = Comments::get();
+        $comments = Comments::with('users')->get();
         return response()->json($comments);
     }
 
@@ -48,6 +48,7 @@ if(Auth::user()->status == 0){
      "post_id" => $post->id,
     'body' => request('body')
    ]);
+   $comments['users'] = Auth::user();
     
    return response()->json($comments);
 

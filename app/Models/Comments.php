@@ -24,7 +24,9 @@ class Comments extends Model
     }
     public function users()
     {
-        return $this->belongsTo(User::class, 'users', );
+        return $this->belongsTo(User::class, 'user_id', );
     }
+    
+
    
 }

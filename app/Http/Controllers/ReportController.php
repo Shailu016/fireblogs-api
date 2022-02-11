@@ -19,7 +19,7 @@ class ReportController extends Controller
     public function index(Report $report)
     {
        
-        $report = Report::with('comments', 'posts')->get();
+        $report = Report::with('comments.users', 'posts')->get();
         
         return response($report);
 

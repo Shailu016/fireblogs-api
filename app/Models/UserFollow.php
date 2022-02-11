@@ -10,9 +10,10 @@ class UserFollow extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function users()
+   
+    public function posts()
     {
-        return $this->hasMany(User::class, 'user_id');
+        return $this->hasMany(Post::class, 'post_id');
     }
 
 

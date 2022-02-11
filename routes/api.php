@@ -34,7 +34,7 @@ Route::group(['middleware' => ['permission:admin', 'auth:sanctum']], function ()
 Route::post('post/{post}/publish', [PostController::class, 'publishPost']);
 
 
-Route::get('post/publish', [PostController::class, 'publish'])->middleware('auth:sanctum');
+Route::get('post/publish', [PostController::class, 'publish']);
 Route::post('post/create', [PostController::class, 'store'])->middleware('auth:sanctum');
 Route::get('post/{post}', [PostController::class, 'show']);
 Route::post('post/{post}/update', [PostController::class, 'update']);
@@ -94,5 +94,6 @@ Route::post('/follow/{post}',[UserFollowController::class,'index'])->middleware(
 Route::get('/t',[UserFollowController::class,'userfollower'])->middleware('auth:sanctum');
 Route::get('/tt',[UserFollowController::class,'user_follower_post'])->middleware('auth:sanctum');
 Route::get('/ttt',[ProfileController::class,'all_users']);
+Route::get('/check/{post}',[UserFollowController::class,'check'])->middleware('auth:sanctum');;
 
 
