@@ -15,11 +15,12 @@ class CreateUserFollowsTable extends Migration
     {
         Schema::create('user_follows', function (Blueprint $table) {
             $table->id();
-            $table->string('following_id');
+            $table->foreignId('following_id')->references('id')->on('users');
             $table->string('follower_id');
             $table->string('follower_name')->nullable();
             $table->string('user_image')->nullable();
             $table->timestamps();
+            
         });
     }
 

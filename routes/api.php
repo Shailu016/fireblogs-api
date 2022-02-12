@@ -95,6 +95,6 @@ Route::get('/t',[UserFollowController::class,'userfollower'])->middleware('auth:
 Route::get('/tt',[UserFollowController::class,'user_follower_post'])->middleware('auth:sanctum');
 Route::get('/ttt',[ProfileController::class,'all_users']);
 Route::get('/check/{post}',[UserFollowController::class,'check'])->middleware('auth:sanctum');;
-Route::get('/all/{user}',[PostController::class,'user_all_post'])->middleware('auth:sanctum');;
+Route::get('/all/{user}',[PostController::class,'user_all_post']);
 
 
