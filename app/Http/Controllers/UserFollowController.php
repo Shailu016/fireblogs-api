@@ -43,7 +43,7 @@ class UserFollowController extends Controller
     {
         $report = UserFollow::where('following_id', Auth::id())->get();
         $t = UserFollow::where('following_id', Auth::id())->pluck('follower_id');
-        $user = User::whereIn('id', $t)->get();
+        $user = User::withcount('posts')->whereIn('id', $t)->get();
         
         
          return response([
