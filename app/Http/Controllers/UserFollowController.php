@@ -24,8 +24,8 @@ class UserFollowController extends Controller
             $user_fololows = UserFollow::create([
                 "follower_id"=> Auth::id(),
                 "following_id"=>$post->user_id,
-                "follower_name"=>$user->name,
-                "user_image"=>$user->image_path
+                "follower_name"=>Auth::user()->name,
+                "user_image"=>Auth::user()->image_path,
             ]);
             return $user_fololows;
         }else{
@@ -42,7 +42,7 @@ class UserFollowController extends Controller
     public function userfollower()
     {
         $report = UserFollow::where('following_id', Auth::id())->get();
-        
+       
         
          return response([
             "followers" => $report,
