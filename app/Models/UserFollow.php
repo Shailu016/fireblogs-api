@@ -15,6 +15,12 @@ class UserFollow extends Model
     {
         return $this->hasMany(Post::class, 'post_id');
     }
+    
+public function users()
+ { return $this->belongsTo(User::class, 'user_id'); }
+
+
+
 
 
 }

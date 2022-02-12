@@ -43,6 +43,7 @@ class UserFollowController extends Controller
     {
         $report = UserFollow::where('following_id', Auth::id())->get();
         
+        
          return response([
             "followers" => $report,
             "No.follower" => $report->count(),
@@ -57,11 +58,15 @@ class UserFollowController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function user_follower_post(Request $request)
-    {
-        $user_fololows = UserFollow::where('follower_id', Auth::id())->first();
-       
-        $post = Post::with('users')->where('id', $user_fololows->following_id)->where("status", 1)->get();
+     {
+        $user_follows = UserFollow::where('follower_id', Auth::id())->first();
+        $user_follows = UserFollow::where('follower_id', $user_follows->follower_id)->pluck('following_id');
+        // dd( $user_follows);
+
+    $post = Post::with('users')->whereIn('user_id', $user_follows)->get();
         return $post;
+        
+        
         
     }
 

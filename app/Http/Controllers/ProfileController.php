@@ -102,10 +102,16 @@ class ProfileController extends Controller
      */
     public function all_users(Profile $profile)
     {
-      
-       $users= User::withcount('posts')->get();
+        $users= User::withcount('posts')->get();
+
        
-    //    dd(followers()->count());
+      
+    //   $user = Userfollow::pluck('following_id');
+
+    //   $user = UserFollow::whereIn('following_id', $user)->get();
+    //   dd($user);
+    //   $user = User::whereIn('id',$user)->get();
+    //   dd($user);
       
      return response($users);
        
