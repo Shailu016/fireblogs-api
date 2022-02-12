@@ -103,6 +103,7 @@ class ProfileController extends Controller
     public function all_users(Profile $profile)
     {
         $users= User::withcount('posts')->get();
+        
 
        
       

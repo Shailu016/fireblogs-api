@@ -99,9 +99,10 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function user_all_post(Post $post, User $user)
     {
-        //
+        $post = Post::where('user_id', $user->id)->get();
+        return $post;
     }
 
     /**
