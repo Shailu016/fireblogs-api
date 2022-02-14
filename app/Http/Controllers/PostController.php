@@ -68,7 +68,7 @@ class PostController extends Controller
             $posts->name = request('name');
             $posts->excerpt = request('excerpt');
             $posts->body = request('body');
-            $posts->image_path = $imagePath ?? null;
+            $posts->image_path = $imagePath ?? 'https://www.koimoi.com/wp-content/new-galleries/2020/10/dilip-joshi-turns-into-jethalal-of-taarak-mehta-ka-ooltah-chashmah-irl-this-picture-is-the-proof001.jpg';
             $posts->user_id = Auth::id();
             $posts->user_profile = $user->image_path;
             $posts->category_id = request('category_id');
