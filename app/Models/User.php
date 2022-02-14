@@ -51,13 +51,7 @@ class User extends Authenticatable
     }
 
 
-    public function sendPasswordResetNotification($token)
-    {
 
-        $url = '' . $token;
-
-        $this->notify(new ResetPasswordNotification($url));
-    }
     public function providers()
     {
         return $this->hasMany(Provider::class, 'user_id', 'id');
@@ -74,13 +68,13 @@ class User extends Authenticatable
     }
 
 
-// public function following() {
-//     return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id');
-// }
+    // public function following() {
+    //     return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id');
+    // }
 
-// users that follow this user
-public function getFollowersAttribute() {
-    return $this->hasMany(UserFollow::class, 'following_id')->count();
-}
-
+    // users that follow this user
+    public function getFollowersAttribute()
+    {
+        return $this->hasMany(UserFollow::class, 'following_id')->count();
+    }
 }

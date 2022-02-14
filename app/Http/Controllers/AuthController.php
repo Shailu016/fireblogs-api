@@ -8,9 +8,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\sendToken;
-use DB;
+use  DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+
 
 
 
@@ -19,7 +20,7 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        
+
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -31,13 +32,13 @@ class AuthController extends Controller
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
         ]);
-       $token = $user->createToken('auth_token')->plainTextToken;
-       if($user->id == 1){
-        //  $role = Role::create(['name' => 'admin']);
+        $token = $user->createToken('auth_token')->plainTextToken;
+        if ($user->id == 1) {
+            //  $role = Role::create(['name' => 'admin']);
             $permission = Permission::create(['name' => 'admin']);
             $user->givePermissionTo('admin');
-        //  $user->assignRole('admin');
-       }
+            //  $user->assignRole('admin');
+        }
 
         return response()->json([
             'message' => "User registered successfully",
@@ -58,7 +59,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        
+
 
         return response()->json([
             'access_token' => $token,
@@ -92,7 +93,7 @@ class AuthController extends Controller
         DB::table('password_resets')->insert([
             'email' => $request->email,
             'token' => $token, //change 60 to any length you want
-            
+
         ]);
         $user->notify(new sendToken($token));
 
@@ -100,56 +101,53 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-            
+
         ]);
     }
 
-        public function reset(Request $request)
-        {
-            $validatedData = $request->validate([
-             
-                'email' => 'required|string|email|max:255',
-                'password' => 'required|string|confirmed|min:6',
-                
-            ]);
-            $token = $request->bearerToken();
-            $tokenData = DB::table('password_resets')
+    public function reset(Request $request)
+    {
+        $validatedData = $request->validate([
+
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|confirmed|min:6',
+
+        ]);
+        $token = $request->bearerToken();
+        $tokenData = DB::table('password_resets')
             ->where('token', $token)->first();
-            $user = User::where('email', $tokenData->email)->firstOrFail();
-            
+        $user = User::where('email', $tokenData->email)->firstOrFail();
+
+        $user->update([
+            'password' => Hash::make($validatedData['password']),
+            'token' => $token,
+        ]);
+
+
+        return response()->json([
+            'message' => 'Password updated successfully'
+        ]);
+    }
+
+    public function userProfile(Request $request)
+    {
+        try {
+            $user = User::where('id', Auth::user()->id)->firstOrFail();
+
             $user->update([
-                'password' => Hash::make($validatedData['password']),
-                'token' => $token,
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
             ]);
-            
-
             return response()->json([
-                  'message' => 'Password updated successfully'
+                'message' => 'User updated successfully',
+                'data' =>   $user
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'User not updated',
+                'data' =>   $user
             ]);
         }
-
-        public function userProfile(Request $request)
-        {
-            try{
-                $user = User::where('id', Auth::user()->id)->firstOrFail();
-
-                $user->update([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                ]);
-                return response()->json([
-                    'message' => 'User updated successfully',
-                      'data' =>   $user
-                ]);
-            }catch(Exception $e){
-                return response()->json([
-                    'message' => 'User not updated',
-                      'data' =>   $user
-                ]);
-            }
-            
-            
-        }
-
+    }
 }

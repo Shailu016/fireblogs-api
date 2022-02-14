@@ -11,6 +11,7 @@ use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\UserFollowController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CategoryController;
 
 
 /*
@@ -97,4 +98,10 @@ Route::get('/ttt',[ProfileController::class,'all_users']);
 Route::get('/check/{post}',[UserFollowController::class,'check'])->middleware('auth:sanctum');;
 Route::get('/all/{user}',[PostController::class,'user_all_post']);
 
+
+
+Route::post('/category/create',[CategoryController::class,'store']);
+Route::post('/category/{category}/update',[CategoryController::class,'update']);
+Route::get('/category',[CategoryController::class,'index']);
+Route::get('/category/{category}',[CategoryController::class,'show']);
 

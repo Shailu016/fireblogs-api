@@ -71,6 +71,7 @@ class PostController extends Controller
             $posts->image_path = $imagePath ?? null;
             $posts->user_id = Auth::id();
             $posts->user_profile = $user->image_path;
+            $posts->category_id = request('category_id');
             $posts->save();
             return response()->json($posts);
         } catch (\Exception $e) {
@@ -128,6 +129,7 @@ class PostController extends Controller
                 $post->name = request('name');
                 $post->excerpt = request('excerpt');
                 $post->body = request('body');
+                $post->category_id = request('category_id');
 
 
                 if (request()->hasFile('image')) {
