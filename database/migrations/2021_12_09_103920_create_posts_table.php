@@ -21,7 +21,8 @@ class CreatePostsTable extends Migration
             $table->text('excerpt');
             $table->text('body');
             $table->string('image_path')->nullable();
-            $table->boolean('status')->default(0);
+            $table->enum('status', ['Draft', 'Archive', 'published'])->default('published');
+            $table->json('tags')->nullable();
             $table->timestamps();
         });
     }

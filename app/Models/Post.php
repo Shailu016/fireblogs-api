@@ -15,10 +15,11 @@ class Post extends Model
         'name',
         'excerpt',
         'body',
-        'tag_id',
+        'tags',
         'image_path',
         'status',
     ];
+    
 
     protected $searchable = [
         'columns' => [
@@ -54,13 +55,17 @@ class Post extends Model
         return $this->bookmark->contains($user);
     }
     
-    public function following() {
-        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id');
+    public function following() 
+    {
+     return $this->belongsToMany(User::class, 'followers', 'follower_id','following_id');
     }
     
     // users that follow this user
-    public function followers() {
-        return $this->belongsToMany(User::class, 'followers', 'following_id', 'follower_id');
+    public function followers()
+    {
+        
+     return $this->belongsToMany(User::class, 'followers', 'following_id', 'follower_id');
+    
     }
     
 }

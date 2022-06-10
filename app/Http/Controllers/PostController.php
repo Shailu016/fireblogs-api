@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Profile;
 use App\Models\Likes;
+use App\Models\Category;
 use App\Models\User;
+use App\Models\Views;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use App\Events\PostPublished;
+use App\Notifications\PostCreated;
+use Carbon\Carbon; 
+
 
 class PostController extends Controller
 {
@@ -21,6 +27,7 @@ class PostController extends Controller
     {
 
      $post = Post::with('users')->get();
+     event(new PostPublished( $post));
      return response()->json($post);
     } 
 
@@ -45,6 +52,7 @@ class PostController extends Controller
                 'excerpt' => 'required',
                 'body' => 'required',
                 'image' => 'mimes:jpg,png,jpeg,webp|max:50480'
+                
 
             ]
         );
@@ -57,22 +65,31 @@ class PostController extends Controller
 
                 $imagePath = time() . $request->name . '.'. $request->image->extension();
                 $request->image->move(public_path('images'), $imagePath);
-
-            $user =User::where('id', Auth::id())->first();
-           
-            
                 
+                $user = User::where('id', Auth::id())->first();
+           
             }
            
             $posts = new Post();
             $posts->name = request('name');
             $posts->excerpt = request('excerpt');
             $posts->body = request('body');
-            $posts->image_path = $imagePath ?? 'https://www.koimoi.com/wp-content/new-galleries/2020/10/dilip-joshi-turns-into-jethalal-of-taarak-mehta-ka-ooltah-chashmah-irl-this-picture-is-the-proof001.jpg';
+            $posts->tags = json_encode(request('tags'));
+            
+            $posts->image_path = $imagePath ?? null;
+           
             $posts->user_id = Auth::id();
             $posts->category_id = request('category_id');
+          
             $posts->save();
-            return response()->json($posts);
+            
+            $user = User::where('id', Auth::id())->where('subscribe', 1)->first();
+            if($user){
+
+                $user->notify(new PostCreated('New Post Created'));
+            }
+            return response()->json($posts); 
+          
         } catch (\Exception $e) {
 
             return $e->getMessage();
@@ -85,12 +102,21 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Post $post, Views $views)
+    
     {
-        $user = User::where('id', $post->user_id)->get();
+        // $user = User::where('id', $post->user_id)->get();
        
-        return response()->json(["post"=>$post, 
-        "user"=>$user ]);
+        // return response()->json(["post"=>$post, 
+        // "user"=>$user ]);
+       
+
+        $views = Views:: Create([
+            'post_id' => $post->id,
+            'views' => 1
+        ]);
+
+        return response()->json($post);
     }
 
     /**
@@ -162,48 +188,82 @@ class PostController extends Controller
         return "Post deleted successfully";
     }
 
-
-    public function publishPost(Post $post)
-    {
-        if ($post->status == 0) {
-
-            $post->update([
-                "status" => 1
-            ]);
-            return response()->json($post);
-        }
-        return "Post is already published";
-    }
-
-    public function unpublishPost(Post $post)
-    {
-        if ($post->status == 1) {
-            $post->update([
-                "status" => 0
-            ]);
-            return response()->json($post);
-        }
-        return "Post is already unpublished";
-    }
-
-    public function publish()
-    {
-
-        $post = Post::with('users')->where('status', 1)->get();
-       if(!count($post)  ){
-
-           return "no post is published";
-    }
-    return response()->json($post);
-      
-    }
-
     public function usersPost()
     {
         $post = Post::where('user_id', Auth::id())->get();
         return $post ;
     }
 
-   
+   public function category(Category $category)
+   {
+         $post = Post::where('category_id', $category->id)->get();
+         return $post;
+   }
+
+   public function statusUpdateDraft(Post $post)
+   {
+      
+        $post=  $post->update(['status' => "Draft"]);
+         return response()->json([
+            'message' => 'Post status updated successfully',
+            'post' => "Draft"
+        
+        ]);
        
+    }
+
+    public function statusUpdateArchive(Post $post)
+    {
+        if($post->status == "published"){
+            $post=  $post->update(['status' => "Archive"]);
+            return response()->json([
+                'message' => 'Post status updated successfully',
+                'post' => "Archived"
+            
+            ]);
+        }
+        else{
+            $post = $post->update(['status' => "published"]);
+            return response()->json([
+                'message' => 'Post status not updated',
+                'post' => "Published"
+            
+            ]);
+        }
+        
+       
+    }
+
+    public function post_by_tags(Request $request)
+    {
+        $post = Post::where('tags', 'like', '%' . $request->tags . '%')->get();
+        return $post;
+    }
+
+    public function post_views(Post $post)
+    {
+       $todaysviews =  Views::whereDate('created_at',  Carbon::today()->toDateString())->where('post_id', $post->id)->count();
+       $date = Carbon::now()->subDays(7);
+
+       $weeklyViews = Views::whereDate('created_at', '>=', $date)->where('post_id', $post->id)->count();
+       $date = Carbon::now()->subDays(30);
+       $mothlyViews = Views::whereDate('created_at', '>=', $date)->where('post_id', $post->id)->count();
+
+       $totalViews = Views::where('post_id', $post->id)->count();
+
+       
+       
+       return response()->json([
+           'todays_Views' => $todaysviews,
+           'weekly_Views' => $weeklyViews,
+           'mothly_Views' => $mothlyViews,
+           'total_Views' => $totalViews
+       ]);
+
+    
+    }
+
+   
+
+   
 }

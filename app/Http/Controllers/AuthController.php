@@ -8,9 +8,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\sendToken;
-use  DB;
+use DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+
+
 
 
 
@@ -150,4 +152,29 @@ class AuthController extends Controller
             ]);
         }
     }
+
+    public function subscribe()
+   {
+       $user = User::where('id', Auth::id())->first();
+      if($user->subscribe == 0){
+          $user->update([
+              'subscribe' => 1,
+          ]);
+          return response()->json([
+              'message' => 'User subscribed successfully',
+              'data' =>   $user
+          ]);
+        }else{
+            $user->update([
+                'subscribe' => 0,
+            ]);
+            return response()->json([
+                'message' => 'User unsubscribed successfully',
+                'data' =>   $user
+            ]);
+        }
+    }
+       
+        
+    
 }

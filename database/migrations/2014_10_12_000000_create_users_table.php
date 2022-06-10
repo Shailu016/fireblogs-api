@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string("youtube")->nullable();
             $table->string("facebook")->nullable();
             $table->string("instagram")->nullable();
+            $table->boolean('subscribe')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
